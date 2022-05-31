@@ -1,4 +1,5 @@
-<script type="text/javascript" src="node_modules/js-sha3/src/sha3.js"></script>
+<!-- script type="text/javascript" src="node_modules/js-sha3/src/sha3.js"></script -->
+<script src="https://cdn.jsdelivr.net/npm/keccak256@latest/keccak256.js"></script>
 
 <div id="drop_zone" style="border-style: solid;" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
     <p>Drag the file here...</p>
@@ -36,7 +37,7 @@ function dropHandler(ev) {
     reader.onload = function() {        
         var s = reader.result;
         s = s.substring(s.indexOf('base64,') + 7);
-        const hash = keccak256(s);
+        const hash = keccak256(s).toString('hex');
         alert(hash);
     };
 
