@@ -1,0 +1,50 @@
+<script type="text/javascript" src="node_modules/js-sha3/src/sha3.js"></script>
+
+<div id="drop_zone" style="border-style: solid;" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+    <p>Drag the file here...</p>
+</div>
+
+<script type="text/javascript">
+//source from: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
+function dropHandler(ev) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+
+    var file = null;
+
+    if (ev.dataTransfer.items) {
+        // Use DataTransferItemList interface to access the file(s)
+        for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+            // If dropped items aren't files, reject them
+            if (ev.dataTransfer.items[i].kind === 'file') {
+                file = ev.dataTransfer.items[i].getAsFile();
+                break;
+            }
+        }
+    } else {
+        // Use DataTransfer interface to access the file(s)
+        for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+            file = ev.dataTransfer.files[i];
+        }
+    }
+
+    if (file == null) return;
+
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = function() {        
+        var s = reader.result;
+        s = s.substring(s.indexOf('base64,') + 7);
+        const hash = keccak256(s);
+        alert(hash);
+    };
+
+    
+}
+
+function dragOverHandler(ev) {
+    ev.preventDefault();
+}
+</script>
+
